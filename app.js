@@ -12,11 +12,12 @@ function closeModal(){modal.classList.add("hidden");document.body.style.overflow
 function closeAuth(){authModal.classList.add("hidden");document.body.style.overflow=""}
 
 async function loadAll(){
+  grid.innerHTML="<div class=\"update\">جارٍ تحميل الألعاب...</div>";
   const [g,u]=await Promise.all([
     sb.from("games").select("*").eq("published",true).order("featured",{ascending:false}).order("created_at",{ascending:false}),
     sb.from("site_updates").select("*").eq("published",true).order("created_at",{ascending:false}).limit(12)
   ]);
-  if(g.error) toast("تعذر تحميل الألعاب: "+g.error.message); else games=g.data||[];
+  if(g.error){console.error(g.error);toast("تعذر تحميل الألعاب. تحقق من اتصال قاعدة البيانات.")} else games=g.data||[];
   if(!u.error) updates=u.data||[];
   buildCategories(); render(); renderUpdates(); $("gameCount").textContent=games.length;
 }
@@ -87,12 +88,12 @@ function renderAuth(){
 function openAuth(){authMode="login";renderAuth();authModal.classList.remove("hidden");document.body.style.overflow="hidden"}
 function openAccount(){if(!authUser)return openAuth();const name=authUser.user_metadata?.username||authUser.email?.split("@")[0]||"مستخدم";authContent.innerHTML='<span class="kicker">ACCOUNT</span><h2>حسابك</h2><p>مسجل الدخول باسم <b>'+esc(name)+'</b>.</p><button class="primary-btn" id="accountLogout" type="button">تسجيل الخروج</button><button class="ghost-btn" id="accountClose" type="button">إغلاق</button>';authModal.classList.remove("hidden");document.body.style.overflow="hidden";$("accountLogout").onclick=async()=>{await sb.auth.signOut();closeAuth();toast("تم تسجيل الخروج");await refreshUser()};$("accountClose").onclick=closeAuth}
 async function handleAuth(e){
-  e.preventDefault(); const status=$("authStatus"); status.textContent="جارٍ الاتصال...";
+  e.preventDefault(); const status=$("authStatus"),form=e.currentTarget,submit=form.querySelector("button[type=submit]"); status.textContent="جارٍ الاتصال...";submit.disabled=true;submit.textContent="جارٍ الاتصال...";
   const email=$("authEmail").value.trim(),password=$("authPassword").value;
   let res=authMode==="login"?await sb.auth.signInWithPassword({email,password}):await sb.auth.signUp({email,password,options:{data:{username:$("authUsername").value.trim()}}});
-  if(res.error){status.textContent=authError(res.error);return}
-  if(res.data.session){closeAuth();toast("تم تسجيل الدخول ✅");await refreshUser();return}
-  if(authMode==="signup")status.textContent="تم إنشاء الحساب. إذا طلب تأكيد البريد، افتح رسالة التأكيد ثم سجّل الدخول.";
+  if(res.error){status.textContent=authError(res.error);submit.disabled=false;submit.textContent=authMode==="login"?"دخول":"إنشاء الحساب";return}
+  if(res.data.session){submit.disabled=false;closeAuth();toast("تم تسجيل الدخول ✅");await refreshUser();return}
+  submit.disabled=false;if(authMode==="signup")status.textContent="تم إنشاء الحساب. إذا طلب تأكيد البريد، افتح رسالة التأكيد ثم سجّل الدخول.";
 }
 function authError(e){
   const m=e?.message||"خطأ غير معروف";
@@ -140,6 +141,7 @@ document.querySelectorAll("[data-auth-close]").forEach(x=>x.onclick=closeAuth);
 $("loginBtn").onclick=()=>authUser?openAccount():openAuth();
 $("heroLogin").onclick=()=>authUser?openAccount():openAuth();
 search.oninput=render;filter.onchange=render;
-$("themeBtn").onclick=()=>document.body.classList.toggle("light");
+const savedTheme=localStorage.getItem("etogame-theme");if(savedTheme==="light")document.body.classList.add("light");
+$("themeBtn").onclick=()=>{document.body.classList.toggle("light");localStorage.setItem("etogame-theme",document.body.classList.contains("light")?"light":"dark")};
 sb.auth.onAuthStateChange(()=>setTimeout(refreshUser,0));
 refreshUser();loadAll();
