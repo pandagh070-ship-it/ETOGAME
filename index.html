@@ -1,1 +1,28 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ETOGAME • REBUILD 2026</title><meta name="description" content="ETOGAME | منصة الألعاب"><link rel="stylesheet" href="styles.css?v=2"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><header><a class="brand" href="./">ETO<span>GAME</span></a><nav><button id="homeBtn">الرئيسية</button><button id="libraryBtn">مكتبتي</button></nav><div class="actions"><button id="themeBtn">☾</button><button id="loginBtn">تسجيل الدخول</button></div></header><div style="display:none" id="build-marker">ETOGAME-REBUILD-2026-10-04</div><main><section class="hero"><div><small>ETO GAME PLATFORM</small><h1>ألعابك.<br><em>في مكان واحد.</em></h1><p>اكتشف الألعاب، افتح صفحتها، وسجّل دخولك لحفظ تقييماتك وتعليقاتك.</p><div class="hero-actions"><button class="primary" id="browseBtn">تصفح الألعاب</button><button class="secondary" id="heroLogin">تسجيل الدخول</button></div></div><div class="hero-card"><b>ETOGAME</b><span>GAME HUB</span><i>✦</i></div></section><section class="toolbar"><div><h2>الألعاب</h2><span id="count">0 لعبة</span></div><div class="filters"><input id="search" placeholder="ابحث عن لعبة..."><select id="category"><option value="">كل التصنيفات</option></select></div></section><section id="games" class="grid"><div class="loading">جارٍ تحميل الألعاب...</div></section><section class="updates"><div class="section-head"><h2>آخر التحديثات</h2></div><div id="updates"></div></section></main><div id="toast" class="toast hidden"></div><dialog id="gameDialog"><div class="dialog-inner"><button class="close" data-close>×</button><div id="gameView"></div></div></dialog><dialog id="authDialog"><div class="dialog-inner"><button class="close" data-close>×</button><div id="authView"></div></div></dialog><script src="app.js?v=2"></script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ETOGAME | Game Library</title><meta name="theme-color" content="#0b0d12">
+<link rel="stylesheet" href="styles.css?v=3">
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="noise"></div>
+<header class="top"><a class="logo" href="#">ETO<span>GAME</span></a><nav><a href="#discover">اكتشف</a><a href="#updates">التحديثات</a></nav><div class="top-actions"><button id="theme" class="icon">◐</button><button id="account" class="account">دخول</button></div></header>
+<main>
+<section class="landing">
+<div class="landing-copy"><div class="eyebrow">DIGITAL GAME LIBRARY</div><h1>العابك<br><span>تبدأ هنا.</span></h1><p>منصة ETOGAME الجديدة لاكتشاف الألعاب وإدارة الإصدارات والتحميلات من مكان واحد.</p><div class="landing-buttons"><a href="#discover" class="cta">استكشف المكتبة <b>↓</b></a><button id="loginHero" class="ghost">حسابي</button></div></div>
+<div class="orbit"><div class="orbit-ring r1"></div><div class="orbit-ring r2"></div><div class="core">ETO<br><small>GAME</small></div><div class="tag t1">APK</div><div class="tag t2">EXE</div><div class="tag t3">ONLINE</div></div>
+</section>
+<section id="discover" class="library">
+<div class="library-head"><div><span class="eyebrow">LIBRARY</span><h2>اختار لعبتك</h2></div><div class="controls"><label>⌕ <input id="search" placeholder="بحث"></label><select id="filter"><option value="">الكل</option></select></div></div>
+<div id="status" class="status">جاري تجهيز المكتبة...</div><div id="games" class="games"></div>
+</section>
+<section id="updates" class="updates"><div class="section-title"><span class="eyebrow">CHANGELOG</span><h2>آخر الأخبار</h2></div><div id="news" class="news"></div></section>
+</main>
+<footer><b>ETOGAME</b><span>مكتبة ألعاب مستقلة</span><span>© 2026</span></footer>
+<dialog id="gameModal"><div id="gameModalBody"></div><button class="modal-x" data-close>×</button></dialog>
+<dialog id="authModal"><div id="authBody"></div><button class="modal-x" data-close>×</button></dialog>
+<div id="toast"></div>
+<script src="app.js?v=3"></script>
+</body></html>
