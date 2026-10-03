@@ -1,32 +1,40 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#080b18">
-  <meta name="description" content="ETOGAME - منصة ألعاب حديثة لتحميل ألعاب Android و Windows.">
-  <meta property="og:title" content="ETOGAME | Games">
-  <meta property="og:description" content="اكتشف ألعاب Android و Windows وحمّلها بسهولة.">
-  <meta property="og:type" content="website">
-  <title>ETOGAME | Games</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b16"><meta name="description" content="ETOGAME منصة ألعاب مستقلة لتحميل ألعاب Android وWindows.">
+<meta property="og:title" content="ETOGAME | ألعاب مستقلة"><meta property="og:description" content="اكتشف الألعاب، قيّمها وحمّلها.">
+<title>ETOGAME | ألعاب مستقلة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="noise"></div>
-  <div class="bg-orb orb-a"></div><div class="bg-orb orb-b"></div>
-  <header class="header"><a class="brand" href="#home"><span class="brand-mark">E</span><span>ETO<span>GAME</span></span></a><nav class="nav"><a href="#home" class="active">الرئيسية</a><a href="#games">الألعاب</a><a href="#updates">التحديثات</a><a href="#about">عن الموقع</a></nav><div class="header-actions"><button class="icon-btn" id="themeBtn">◐</button><button class="login-btn" id="loginBtn">تسجيل الدخول</button></div></header>
-  <main id="home">
-    <section class="hero reveal"><div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> منصة ألعاب مستقلة</div><h1>اللعبة التي تبحث عنها،<br><span>في مكان واحد.</span></h1><p>ETOGAME تجمع ألعابك في واجهة سريعة وأنيقة، مع صفحات ألعاب، تحديثات، تقييمات وتحميلات لـ Android و Windows.</p><div class="hero-actions"><a class="primary-btn" href="#games">استكشف الألعاب <b>←</b></a><a class="ghost-btn" href="#updates">آخر التحديثات</a></div><div class="hero-stats"><div><strong id="gameCount">0</strong><small>لعبة</small></div><div><strong>2</strong><small>منصات</small></div><div><strong>∞</strong><small>تحديثات</small></div></div></div><div class="hero-art"><div class="hero-card tilt"><div class="scanline"></div><div class="hero-logo">ETO<span>GAME</span></div><div class="hero-grid"></div><div class="floating-chip chip-1">ANDROID</div><div class="floating-chip chip-2">WINDOWS</div><div class="hero-center">PLAY<br><span>NOW</span></div></div></div></section>
-    <section id="games" class="section"><div class="section-head reveal"><div><span class="section-kicker">LIBRARY</span><h2>الألعاب</h2></div><div class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="ابحث عن لعبة..."></div></div><div id="gamesGrid" class="games-grid"></div></section>
-    <section id="updates" class="section updates-section"><div class="section-head reveal"><div><span class="section-kicker">CHANGELOG</span><h2>آخر التحديثات</h2></div></div><div id="updatesList" class="timeline"></div></section>
-    <section id="about" class="section about reveal"><div class="about-panel"><span class="section-kicker">ETOGAME</span><h2>منصة تكبر مع ألعابك.</h2><p>الألعاب والتحديثات تُقرأ من قاعدة بيانات ETOGAME مباشرة، لذلك يمكن تغيير المحتوى من لوحة الإدارة لاحقاً من دون تعديل الموقع لكل زائر.</p><div class="feature-row"><span>⚡ سريع</span><span>✨ متحرك</span><span>📱 متجاوب</span><span>🔄 Live Data</span></div></div></section>
-  </main>
-  <footer><span>© 2026 ETOGAME</span><span>Built for gamers 🎮</span></footer>
-  <div class="modal hidden" id="authModal"><div class="modal-backdrop" data-auth-close></div><article class="modal-card"><button class="close" data-auth-close>×</button><div id="authContent"><span class="section-kicker">ACCOUNT</span><h2>تسجيل الدخول</h2><p>سجل دخولك أو أنشئ حسابًا جديدًا في ETOGAME.</p><form id="authForm"><input id="authEmail" type="email" placeholder="البريد الإلكتروني" required><input id="authPassword" type="password" placeholder="كلمة المرور" minlength="6" required><input id="authUsername" type="text" placeholder="اسم المستخدم" style="display:none"><button class="primary-btn" type="submit" id="authSubmit">دخول</button></form><button class="ghost-btn" id="authSwitch" type="button">إنشاء حساب جديد</button><p id="authStatus"></p></div></article></div><div class="modal hidden" id="gameModal"><div class="modal-backdrop" data-close></div><article class="modal-card"><button class="close" data-close>×</button><div id="modalContent"></div></article></div>
-  <div class="toast hidden" id="toast"></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>
-</body>
-</html>
+<div class="bg-grid"></div><div class="orb orb-a"></div><div class="orb orb-b"></div>
+<header class="header">
+<a class="brand" href="#home"><span class="brand-mark">E</span><span>ETO<span>GAME</span></span></a>
+<nav><a href="#home">الرئيسية</a><a href="#games">الألعاب</a><a href="#updates">التحديثات</a></nav>
+<div class="header-actions"><button class="icon-btn" id="themeBtn" title="تغيير المظهر">◐</button><button class="login-btn" id="loginBtn">تسجيل الدخول</button></div>
+</header>
+<main id="home">
+<section class="hero">
+<div class="hero-copy"><span class="eyebrow">● منصة ألعاب مستقلة</span><h1>اكتشف لعبتك.<br><span>ابدأ اللعب.</span></h1><p>مكتبة ETOGAME للألعاب المستقلة، مع تقييمات وتعليقات وتحميلات Android وWindows في مكان واحد.</p>
+<div class="hero-actions"><a class="primary-btn" href="#games">🎮 تصفح الألعاب</a><button class="ghost-btn" id="heroLogin">👤 حسابي</button></div>
+<div class="hero-stats"><div><strong id="gameCount">0</strong><small>ألعاب</small></div><div><strong>Android</strong><small>تحميل</small></div><div><strong>Windows</strong><small>تحميل</small></div></div></div>
+<div class="hero-feature"><div class="feature-screen"><div class="screen-top"><span>ETOGAME</span><i>● LIVE</i></div><div class="scene"><div class="moon"></div><div class="mountain m1"></div><div class="mountain m2"></div><div class="player"></div><div class="hud">WAKLESS <b>1.0.0</b></div></div><div class="screen-bottom"><b>WAKLESS</b><span>FIRST RELEASE</span></div></div></div>
+</section>
+<section id="games" class="section">
+<div class="section-head"><div><span class="kicker">LIBRARY</span><h2>الألعاب</h2><p>اختَر لعبة وافتح صفحتها مباشرة.</p></div>
+<div class="tools"><select id="categoryFilter"><option value="">كل التصنيفات</option></select><label class="search"><span>⌕</span><input id="search" type="search" placeholder="ابحث..."></label></div></div>
+<div id="gamesGrid" class="games-grid"></div>
+</section>
+<section id="updates" class="section"><div class="section-head"><div><span class="kicker">CHANGELOG</span><h2>آخر التحديثات</h2></div></div><div id="updatesList" class="timeline"></div></section>
+<section class="section about"><div class="about-panel"><span class="kicker">ETOGAME</span><h2>منصة بسيطة، بدون زحمة.</h2><p>المحتوى والتحديثات تُقرأ مباشرة من قاعدة بيانات ETOGAME. الألعاب الجديدة والتحديثات يمكن نشرها من لوحة الإدارة.</p><div class="feature-row"><span>⚡ سريع</span><span>📱 متجاوب</span><span>⭐ تقييمات</span><span>💬 تعليقات</span></div></div></section>
+</main>
+<footer><span>© 2026 ETOGAME</span><span>Made for independent games 🎮</span></footer>
+
+<div class="modal hidden" id="authModal"><div class="backdrop" data-auth-close></div><article class="modal-card auth-card"><button class="close" data-auth-close>×</button><div id="authContent"></div></article></div>
+<div class="modal hidden" id="gameModal"><div class="backdrop" data-close></div><article class="modal-card game-modal"><button class="close" data-close>×</button><div id="modalContent"></div></article></div>
+<div class="toast hidden" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>
+</body></html>
