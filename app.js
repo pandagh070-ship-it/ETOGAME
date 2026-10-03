@@ -1,6 +1,9 @@
 const SUPABASE_URL="https://bbgydodrydbruqnugrjq.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_wzyjqh9paWFBt2i733ZTvQ_SkhPVh1u";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const sb=window.supabase?.createClient
+  ? window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY)
+  : null;
+function dbReady(){if(!sb){toast("خدمة الحسابات لم تُحمّل. حدّث الصفحة وحاول مرة أخرى.");return false}return true;}
 
 let games=[],updates=[],authUser=null,isAdmin=false,authMode="login";
 const $=id=>document.getElementById(id);
@@ -13,6 +16,7 @@ function closeAuth(){authModal.classList.add("hidden");document.body.style.overf
 
 async function loadAll(){
   grid.innerHTML="<div class=\"update\">جارٍ تحميل الألعاب...</div>";
+  if(!dbReady()){grid.innerHTML="<div class=\"update\">تعذر الاتصال بخدمة ETOGAME. أعد تحميل الصفحة.</div>";return}
   const [g,u]=await Promise.all([
     sb.from("games").select("*").eq("published",true).order("featured",{ascending:false}).order("created_at",{ascending:false}),
     sb.from("site_updates").select("*").eq("published",true).order("created_at",{ascending:false}).limit(12)
@@ -52,7 +56,10 @@ async function openGame(slug){
   modalContent.innerHTML='<span class="kicker">'+esc(g.category||"GAME")+'</span><h2>'+esc(g.title)+'</h2><p>'+esc(g.description||g.short_description||"")+'</p>'+
     '<div class="badges"><span class="badge">⭐ '+avg+'/5</span><span class="badge">'+ratings.length+' تقييم</span><span class="badge">v'+esc(g.version||"")+'</span></div>'+
     '<div class="rating-box"><b>تقييم اللعبة</b><div id="stars">'+[1,2,3,4,5].map(n=>'<button class="star '+(n<=my?"on":"")+'" type="button" data-rating="'+n+'">★</button>').join("")+'</div><span class="rating-summary">'+(my?"تقييمك: "+my+"/5":"اختر عدد النجوم")+'</span></div>'+
-    '<h3>تحميل اللعبة</h3><div class="download-row">'+(android?'<a class="download" href="'+esc(android)+'">⬇ تحميل Android APK</a>':'<span class="download disabled">Android غير متاح</span>')+(windows?'<a class="download" href="'+esc(windows)+'">⬇ تحميل Windows EXE</a>':'<span class="download disabled">Windows غير متاح</span>')+'</div>'+
+    '<h3>تحميل اللعبة</h3><div class="download-row">'+
+(android?'<a class="download" href="'+esc(android)+'" target="_blank" rel="noopener" download>📱 تنزيل APK</a>':'<span class="download disabled">Android غير متاح</span>')+
+(windows?'<a class="download" href="'+esc(windows)+'" target="_blank" rel="noopener" download>💻 تنزيل EXE</a>':'<span class="download disabled">Windows غير متاح</span>')+
+'</div><p class="rating-summary">بعد تنزيل APK افتحه من مدير الملفات لتثبيته. Windows: شغّل ملف EXE بعد اكتمال التنزيل.</p>'+
     '<p class="rating-summary">الإصدار الحالي: '+esc(latest.version||g.version||"غير محدد")+'</p><hr><h3>💬 التعليقات</h3>'+
     '<div class="comment-form">'+(authUser?'<textarea id="commentBody" maxlength="2000" placeholder="اكتب تعليقك..."></textarea><button class="primary-btn" id="sendComment" type="button">إرسال التعليق</button>':'<button class="ghost-btn" id="commentLogin" type="button">سجل الدخول لكتابة تعليق</button>')+'</div>'+
     '<div class="comments">'+(comments.length?comments.map(x=>'<div class="comment"><b>👤 '+esc(x.profiles?.username||"مستخدم")+'</b><small>'+esc((x.created_at||"").slice(0,16).replace("T"," "))+'</small><p>'+esc(x.body)+'</p>'+(x.user_id===authUser?.id?'<button class="comment-delete" data-comment="'+esc(x.id)+'" type="button">حذف</button>':"")+'</div>').join(""):'<p>لا توجد تعليقات بعد.</p>')+'</div>';
@@ -63,18 +70,20 @@ async function openGame(slug){
   modalContent.querySelectorAll("[data-comment]").forEach(b=>b.onclick=()=>deleteComment(b.dataset.comment,g.slug));
 }
 async function rateGame(gameId,rating,slug){
+  if(!dbReady())return;
   if(!authUser){toast("سجّل الدخول أولًا حتى تحفظ تقييمك.");openAuth();return}
   const {error}=await sb.from("ratings").upsert({game_id:gameId,user_id:authUser.id,rating},{onConflict:"game_id,user_id"});
   if(error)toast("تعذر حفظ التقييم: "+error.message);else{toast("تم حفظ تقييمك ⭐");await openGame(slug)}
 }
 async function addComment(gameId,slug){
+  if(!dbReady())return;
   const body=$("commentBody")?.value.trim(); if(!body)return toast("اكتب تعليقًا أولًا.");
   if(!authUser)return openAuth();
   const {error}=await sb.from("comments").insert({game_id:gameId,user_id:authUser.id,body});
   if(error)toast("تعذر نشر التعليق: "+error.message);else{toast("تم نشر التعليق");await openGame(slug)}
 }
 async function deleteComment(id,slug){
-  if(!authUser)return;
+  if(!dbReady()||!authUser)return;
   const {error}=await sb.from("comments").delete().eq("id",id).eq("user_id",authUser.id);
   if(error)toast("تعذر حذف التعليق: "+error.message);else openGame(slug);
 }
@@ -89,7 +98,8 @@ function renderAuth(){
 function openAuth(){authMode="login";renderAuth();authModal.classList.remove("hidden");document.body.style.overflow="hidden"}
 function openAccount(){if(!authUser)return openAuth();const name=authUser.user_metadata?.username||authUser.email?.split("@")[0]||"مستخدم";authContent.innerHTML='<span class="kicker">ACCOUNT</span><h2>حسابك</h2><p>مسجل الدخول باسم <b>'+esc(name)+'</b>.</p><button class="primary-btn" id="accountLogout" type="button">تسجيل الخروج</button><button class="ghost-btn" id="accountClose" type="button">إغلاق</button>';authModal.classList.remove("hidden");document.body.style.overflow="hidden";$("accountLogout").onclick=async()=>{await sb.auth.signOut();closeAuth();toast("تم تسجيل الخروج");await refreshUser()};$("accountClose").onclick=closeAuth}
 async function handleAuth(e){
-  e.preventDefault(); const status=$("authStatus"),form=e.currentTarget,submit=form.querySelector("button[type=submit]"); status.textContent="جارٍ الاتصال...";submit.disabled=true;submit.textContent="جارٍ الاتصال...";
+  e.preventDefault();
+  if(!dbReady())return; const status=$("authStatus"),form=e.currentTarget,submit=form.querySelector("button[type=submit]"); status.textContent="جارٍ الاتصال...";submit.disabled=true;submit.textContent="جارٍ الاتصال...";
   const email=$("authEmail").value.trim(),password=$("authPassword").value;
   let res=authMode==="login"?await sb.auth.signInWithPassword({email,password}):await sb.auth.signUp({email,password,options:{data:{username:$("authUsername").value.trim()}}});
   if(res.error){status.textContent=authError(res.error);submit.disabled=false;submit.textContent=authMode==="login"?"دخول":"إنشاء الحساب";return}
@@ -105,6 +115,7 @@ function authError(e){
   return "تعذر تسجيل الدخول: "+m;
 }
 async function refreshUser(){
+  if(!dbReady())return;
   const {data,error}=await sb.auth.getSession(); if(error)console.error(error);
   authUser=data.session?.user||null; isAdmin=false;
   if(authUser){
@@ -144,5 +155,10 @@ $("heroLogin").onclick=()=>authUser?openAccount():openAuth();
 search.oninput=render;filter.onchange=render;
 const savedTheme=localStorage.getItem("etogame-theme");if(savedTheme==="light")document.body.classList.add("light");
 $("themeBtn").onclick=()=>{document.body.classList.toggle("light");localStorage.setItem("etogame-theme",document.body.classList.contains("light")?"light":"dark")};
-sb.auth.onAuthStateChange(()=>setTimeout(refreshUser,0));
-refreshUser();loadAll();
+if(sb){
+  sb.auth.onAuthStateChange(()=>setTimeout(refreshUser,0));
+  refreshUser();
+  loadAll();
+}else{
+  grid.innerHTML="<div class=\"update\">خدمة ETOGAME غير جاهزة. أعد تحميل الصفحة.</div>";
+}
