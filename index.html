@@ -25,8 +25,8 @@
     <section id="about" class="section about reveal"><div class="about-panel"><span class="section-kicker">ETOGAME</span><h2>منصة تكبر مع ألعابك.</h2><p>الألعاب والتحديثات تُقرأ من قاعدة بيانات ETOGAME مباشرة، لذلك يمكن تغيير المحتوى من لوحة الإدارة لاحقاً من دون تعديل الموقع لكل زائر.</p><div class="feature-row"><span>⚡ سريع</span><span>✨ متحرك</span><span>📱 متجاوب</span><span>🔄 Live Data</span></div></div></section>
   </main>
   <footer><span>© 2026 ETOGAME</span><span>Built for gamers 🎮</span></footer>
-  <div class="modal hidden" id="gameModal"><div class="modal-backdrop" data-close></div><article class="modal-card"><button class="close" data-close>×</button><div id="modalContent"></div></article></div>
+  <div class="modal hidden" id="authModal"><div class="modal-backdrop" data-auth-close></div><article class="modal-card"><button class="close" data-auth-close>×</button><div id="authContent"><span class="section-kicker">ACCOUNT</span><h2>تسجيل الدخول</h2><p>سجل دخولك أو أنشئ حسابًا جديدًا في ETOGAME.</p><form id="authForm"><input id="authEmail" type="email" placeholder="البريد الإلكتروني" required><input id="authPassword" type="password" placeholder="كلمة المرور" minlength="6" required><input id="authUsername" type="text" placeholder="اسم المستخدم" style="display:none"><button class="primary-btn" type="submit" id="authSubmit">دخول</button></form><button class="ghost-btn" id="authSwitch" type="button">إنشاء حساب جديد</button><p id="authStatus"></p></div></article></div><div class="modal hidden" id="gameModal"><div class="modal-backdrop" data-close></div><article class="modal-card"><button class="close" data-close>×</button><div id="modalContent"></div></article></div>
   <div class="toast hidden" id="toast"></div>
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>
 </body>
 </html>
