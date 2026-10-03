@@ -1,19 +1,11 @@
 # ETOGAME
+The ETOGAME web platform.
 
-منصة ألعاب مستقلة لـ Android و Windows.
+This repository contains the rebuilt frontend and GitHub Pages deployment for the 2026 ETOGAME platform.
 
-## التحديثات
-الموقع مبني بحيث يتم نشر كل تحديث تلقائياً عبر GitHub Pages عند الدفع إلى فرع `main`.
-
-## الحالة الحالية
-- واجهة احترافية ومتجاوبة
-- Animations وانتقالات
-- بحث عن الألعاب
-- صفحة تفاصيل WAKLESS
-- قسم للتحديثات
-- نشر تلقائي عبر GitHub Pages
-
-## المرحلة التالية
-ربط Auth + Database + Comments + Admin Dashboard + Storage للملفات، ثم تفعيل روابط APK/EXE الدائمة.
-
-> لا يتم تخزين كلمات المرور داخل الموقع. نظام الحسابات النهائي سيستخدم مزود Auth آمن.
+- Library
+- Search and categories
+- Game details
+- APK / EXE download links from the database
+- Supabase authentication
+- Comments
