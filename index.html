@@ -36,5 +36,13 @@
 <div class="modal hidden" id="authModal"><div class="backdrop" data-auth-close></div><article class="modal-card auth-card"><button class="close" data-auth-close>×</button><div id="authContent"></div></article></div>
 <div class="modal hidden" id="gameModal"><div class="backdrop" data-close></div><article class="modal-card game-modal"><button class="close" data-close>×</button><div id="modalContent"></div></article></div>
 <div class="toast hidden" id="toast"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2';"></script>
+<script>
+window.addEventListener("error",function(e){
+  if(String(e.message||"").includes("supabase")||String(e.message||"").includes("createClient")){
+    var box=document.getElementById("toast"); if(box){box.textContent="تعذر تحميل خدمة الحسابات. أعد تحميل الصفحة.";box.classList.remove("hidden");}
+  }
+});
+</script>
+<script src="app.js"></script>
 </body></html>
