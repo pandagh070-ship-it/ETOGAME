@@ -1,4 +1,4 @@
-name: Deploy ETOGAME
+name: ETOGAME Pages
 on:
   push:
     branches: [main]
@@ -8,23 +8,20 @@ permissions:
   pages: write
   id-token: write
 concurrency:
-  group: pages
+  group: etogame-pages
   cancel-in-progress: true
 jobs:
-  deploy:
+  publish:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: .
-      - name: Deploy
-        id: deployment
+      - name: Publish new ETOGAME
+        id: deploy
         uses: actions/deploy-pages@v4
