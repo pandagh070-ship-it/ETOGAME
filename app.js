@@ -30,6 +30,7 @@ function render(){
   const q=(search.value||"").trim().toLowerCase(),cat=filter.value;
   const items=games.filter(g=>(!cat||g.category===cat)&&(g.title+" "+(g.short_description||"")+" "+(g.category||"")).toLowerCase().includes(q));
   grid.innerHTML=items.length?items.map(g=>'<article class="game-card" data-slug="'+esc(g.slug)+'"><button class="game-cover-btn open-game" type="button"><div class="cover"><div class="cover-title">'+esc(g.title)+'</div><span class="cover-open">فتح اللعبة ↗</span></div></button><div class="game-info"><h3>'+esc(g.title)+'</h3><p>'+esc(g.short_description||"لعبة مستقلة من ETOGAME.")+'</p><div class="badges"><span class="badge">'+esc(g.category||"Game")+'</span><span class="badge">v'+esc(g.version||"1.0.0")+'</span></div><div class="game-bottom"><span class="badge">ETOGAME</span><button class="details-btn open-game" type="button">التفاصيل والتحميل</button></div></div></article>').join(""):'<div class="update">لا توجد ألعاب مطابقة.</div>';
+  grid.querySelectorAll(".game-card").forEach(card=>{const g=games.find(x=>x.slug===card.dataset.slug),cover=card.querySelector(".cover");if(g?.cover_url&&cover){try{const u=new URL(g.cover_url,location.href);if(["https:","http:"].includes(u.protocol)){cover.style.backgroundImage=`linear-gradient(180deg,transparent 35%,#070a13dd),url("${u.href}")`;cover.style.backgroundSize="cover";cover.style.backgroundPosition="center"}}catch{}}});
   grid.querySelectorAll(".open-game").forEach(b=>b.addEventListener("click",()=>openGame(b.closest(".game-card").dataset.slug)));
 }
 function renderUpdates(){
