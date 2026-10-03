@@ -84,7 +84,8 @@ function renderAuth(){
   $("authSwitch").onclick=()=>{authMode=authMode==="login"?"signup":"login";renderAuth()};
   $("authForm").onsubmit=handleAuth;
 }
-function openAuth(){authMode="login";renderAuth();authModal.classList.remove("hidden");document.body.style.overflow="hidden"}\nfunction openAccount(){if(!authUser)return openAuth();const name=authUser.user_metadata?.username||authUser.email?.split("@")[0]||"مستخدم";authContent.innerHTML='<span class="kicker">ACCOUNT</span><h2>حسابك</h2><p>مسجل الدخول باسم <b>'+esc(name)+'</b>.</p><button class="primary-btn" id="accountLogout" type="button">تسجيل الخروج</button><button class="ghost-btn" id="accountClose" type="button">إغلاق</button>';authModal.classList.remove("hidden");document.body.style.overflow="hidden";$("accountLogout").onclick=async()=>{await sb.auth.signOut();closeAuth();toast("تم تسجيل الخروج");await refreshUser()};$("accountClose").onclick=closeAuth}
+function openAuth(){authMode="login";renderAuth();authModal.classList.remove("hidden");document.body.style.overflow="hidden"}
+function openAccount(){if(!authUser)return openAuth();const name=authUser.user_metadata?.username||authUser.email?.split("@")[0]||"مستخدم";authContent.innerHTML='<span class="kicker">ACCOUNT</span><h2>حسابك</h2><p>مسجل الدخول باسم <b>'+esc(name)+'</b>.</p><button class="primary-btn" id="accountLogout" type="button">تسجيل الخروج</button><button class="ghost-btn" id="accountClose" type="button">إغلاق</button>';authModal.classList.remove("hidden");document.body.style.overflow="hidden";$("accountLogout").onclick=async()=>{await sb.auth.signOut();closeAuth();toast("تم تسجيل الخروج");await refreshUser()};$("accountClose").onclick=closeAuth}
 async function handleAuth(e){
   e.preventDefault(); const status=$("authStatus"); status.textContent="جارٍ الاتصال...";
   const email=$("authEmail").value.trim(),password=$("authPassword").value;
